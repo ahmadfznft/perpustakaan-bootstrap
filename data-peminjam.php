@@ -25,9 +25,9 @@
                 <h2 class="text-center mb-4">Data Peminjam Buku</h2>
 
                 <div class="d-flex justify-content-end mb-3">
-                    <input type="text" id="searchInput" class="form-control w-25" onkeyup="searchTable()" placeholder="Cari data role   ...">
+                    <input type="text" id="searchInput" class="form-control w-25" onkeyup="searchTable()" placeholder="Cari data role...">
                 </div>
-                
+
                 <table class="table table-bordered table-striped">
                     <thead class="table-light">
                         <tr>
@@ -63,6 +63,12 @@
                                         case 'Buku Dikembalikan':
                                             echo '<span class="badge bg-success">Buku Dikembalikan</span>';
                                             break;
+                                        case 'Ditolak':
+                                            echo '<span class="badge bg-danger">Ditolak</span>';
+                                            break;
+                                        case 'Pengembalian Telat':
+                                            echo '<span class="badge bg-danger">Pengembalian Telat</span>';
+                                            break;
                                         default:
                                             echo '<span class="badge bg-secondary">Status Tidak Diketahui</span>';
                                             break;
@@ -70,12 +76,29 @@
                                     ?>
                                 </td>
                                 <td>
-                                    <?php if ($row['StatusPeminjaman'] == 'Menunggu Konfirmasi') { ?>
-                                        <a href="konfirmasi-peminjaman.php?konfirmasi=<?= $row['PeminjamanID']; ?>" class="btn btn-warning btn-sm">Konfirmasi</a>
-                                    <?php } elseif ($row['StatusPeminjaman'] == 'Buku Dipinjam') { ?>
-                                        <a href="proses-peminjaman.php?ubah=<?= $row['PeminjamanID']; ?>" class="btn btn-primary btn-sm">Ubah Status</a>
+                                    <?php
+                                    // Cek status peminjaman
+                                    if ($row['StatusPeminjaman'] == 'Menunggu Konfirmasi') {
+                                    ?>
+                                        <a href="proses-pinjam.php?ubah=<?= $row['PeminjamanID']; ?>" class="btn btn-warning btn-sm">Konfirmasi</a>
+                                    <?php
+                                    } elseif ($row['StatusPeminjaman'] == 'Buku Dipinjam') {
+                                    ?>
+                                        <a href="proses-pinjam.php?kembalikan=<?= $row['PeminjamanID']; ?>" class="btn btn-success btn-sm">Buku Kembali</a>
+                                    <?php
+                                    } elseif ($row['StatusPeminjaman'] == 'Buku Dikembalikan' || $row['StatusPeminjaman'] == 'Pengembalian Telat') {
+                                    ?>
+                                        <!-- Tidak perlu tombol aksi jika buku sudah dikembalikan atau terlambat -->
+                                    <?php
+                                    }
+                                    ?>
+
+                                    <!-- Tombol untuk menolak peminjaman -->
+                                    <?php if ($row['StatusPeminjaman'] != 'Buku Dikembalikan' && $row['StatusPeminjaman'] != 'Ditolak') { ?>
+                                        <a href="proses-pinjam.php?tolak=<?= $row['PeminjamanID']; ?>" class="btn btn-danger btn-sm">Tolak</a>
                                     <?php } ?>
                                 </td>
+
                             </tr>
                         <?php
                         }
@@ -85,31 +108,6 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Fungsi pencarian manual
-        function searchTable() {
-            var input, filter, table, tr, td, i, j, txtValue;
-            input = document.getElementById("searchInput");
-            filter = input.value.toLowerCase();
-            table = document.getElementById("example");
-            tr = table.getElementsByTagName("tr");
-
-            for (i = 1; i < tr.length; i++) {
-                tr[i].style.display = "none";
-                td = tr[i].getElementsByTagName("td");
-                for (j = 0; j < td.length; j++) {
-                    if (td[j]) {
-                        txtValue = td[j].textContent || td[j].innerText;
-                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
-                            tr[i].style.display = "";
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    </script>
 
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>

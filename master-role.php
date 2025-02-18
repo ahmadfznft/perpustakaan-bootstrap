@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end mb-3">
-                    <input type="text" id="searchInput" class="form-control w-25" onkeyup="searchTable()" placeholder="Cari data role   ...">
+                    <input type="text" id="searchInput" class="form-control w-25" onkeyup="searchTable()" placeholder="Cari data role...">
                 </div>
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">

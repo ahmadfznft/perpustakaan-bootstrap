@@ -20,11 +20,34 @@ $result = mysqli_query($conn, $query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Peminjaman Buku</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .table-responsive {
+            margin-top: 20px;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        .table .btn {
+            font-size: 0.875rem;
+        }
+
+        .table-primary th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+    </style>
 </head>
 
 <body class="bg-light">
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Pinjam Buku</h1>
+        <h1 class="text-center mb-4">Data Peminjaman Buku</h1>
         <div class="table-responsive">
             <table class="table table-bordered table-striped">
                 <thead class="table-primary">
@@ -51,9 +74,9 @@ $result = mysqli_query($conn, $query);
                                 <td> <?= htmlspecialchars($row['StatusPeminjaman']); ?> </td>
                                 <td class="text-center">
                                     <?php if ($_SESSION['RoleID'] == 3 || $_SESSION['RoleID'] == 1) : ?>
-                                        <?php if (trim($row['StatusPeminjaman']) != 'Buku Dikembalikan') : ?>
+                                        <?php if (trim($row['StatusPeminjaman']) == 'Menunggu Konfirmasi') : ?>
                                             <a href="proses-pinjam.php?hapus=<?= $row['PeminjamanID'] ?>" class="btn btn-danger btn-sm"
-                                               onclick="return confirm('Yakin Untuk Membatalkan Peminjaman ?')">Hapus</a>
+                                                onclick="return confirm('Yakin Untuk Membatalkan Peminjaman ?')">Hapus</a>
                                         <?php endif; ?>
                                     <?php endif; ?>
                                 </td>

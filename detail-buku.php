@@ -15,6 +15,10 @@ $query_kategori = "SELECT kategori_buku.NamaKategori
                    WHERE kategoribuku_relasi.BukuID = $id_buku";
 $result_kategori = mysqli_query($conn, $query_kategori);
 
+$query_rating = "SELECT COALESCE(AVG(Rating), 0) AS RataRata, COUNT(UlasanID) AS JumlahRating FROM ulasanbuku WHERE BukuID = $id_buku";
+$result_rating = mysqli_query($conn, $query_rating);
+$rating = mysqli_fetch_assoc($result_rating);
+
 $qulasan = "SELECT ulasanbuku.*, user.Username 
                    FROM ulasanbuku 
                    JOIN user ON ulasanbuku.UserID = user.UserID 
@@ -103,11 +107,13 @@ $result_komentar = mysqli_query($conn, $qulasan);
             </div>
         </div>
 
-        <form method="POST" action="proses-koleksi.php">
+        <form method="POST" action="proses-koleksi.php" class="d-inline">
             <input type="hidden" name="bukuID" value="<?= $id_buku ?>">
             <input type="hidden" name="userID" value="<?= $user_id ?>">
             <button type="submit" class="btn btn-primary" name="tambah">Tambah ke Favorit</button>
         </form>
+
+        <a href="home-peminjam.php" class="btn btn-secondary">Kembali</a>
     </div>
 
     <script src="bootstrap/js/bootstrap.bundle.min.js"></script>

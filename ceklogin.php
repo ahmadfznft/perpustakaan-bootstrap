@@ -6,6 +6,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = $_POST['username'];
         $pw = md5($_POST['pass']);
 
+        // Cek Apakah User sudah Login Jika ya Maka :
+        if (isset($_SESSION['UserID']) && $_SESSION['Username'] == $user) {
+            echo "<script>alert('Anda sudah login di tab lain. Mohon logout terlebih dahulu.'); window.location.href='login.php';</script>";
+            exit();
+        }
+
         $query = mysqli_query($conn, "SELECT * FROM `user` WHERE Username='$user' AND Password='$pw'");
 
         $count = mysqli_num_rows($query);
@@ -31,4 +37,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "<script>alert('Mohon isi username dan password'); window.location.href='login.php';</script>";
     }
 }
-?>
